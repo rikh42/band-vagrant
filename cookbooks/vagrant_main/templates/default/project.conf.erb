@@ -1,0 +1,50 @@
+<VirtualHost *:80>
+	ServerName band.riffal.com
+    DocumentRoot /band/htdocs
+    CustomLog /var/log/apache2/access.log combined
+
+	IndexIgnore *
+
+	<Directory "/band/htdocs">
+		Options FollowSymLinks -Indexes
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+		EnableSendfile Off
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName test.riffal.com
+    DocumentRoot /test/symfony-live-hangman/web
+    CustomLog /var/log/apache2/access.log combined
+
+	IndexIgnore *
+
+	<Directory "/test/htdocs">
+		Options FollowSymLinks -Indexes
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+		EnableSendfile Off
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName rik.riffal.com
+    DocumentRoot /rik/htdocs
+    CustomLog /var/log/apache2/access.log combined
+
+    SetEnv BAND_ENV dev
+    SetEnv POSTMARKAPP_API_KEY 300fd23f-39a5-4d8b-bc20-5a855a0d9209
+
+	IndexIgnore *
+
+	<Directory "/rik/htdocs">
+		Options FollowSymLinks -Indexes
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+		EnableSendfile Off
+	</Directory>
+</VirtualHost>
