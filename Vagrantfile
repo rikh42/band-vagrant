@@ -1,14 +1,21 @@
 Vagrant::Config.run do |config|
-  # All Vagrant configuration is done here. The most common configuration
-  # options are documented and commented below. For a complete reference,
-  # please see the online documentation at vagrantup.com.
-
-  # Every Vagrant virtual environment requires a box to build off of.
+  ###############################################
+  # Which base box to use
   config.vm.box = "ubuntu"
 
+
+  ###############################################
+  # Forward some ports. The values are Port on VM, Port on Host computer
   config.vm.forward_port(80, 8080)
   config.vm.forward_port(22, 2222)
   config.vm.forward_port(3306, 3306)
+
+
+
+  ###############################################
+  # Share some folder from Host machine and
+  # mount them on the VM
+  # Format is Name of share, Path on VM, Path on Host computer to share
 
   ## Normal Band Dev
   config.vm.share_folder("band", "/band", "../../band/band-framework", :extra => 'dmode=777,fmode=777')
@@ -16,22 +23,16 @@ Vagrant::Config.run do |config|
   ## Rikheywood.co.uk
   config.vm.share_folder "rik", "/rik", "../../clients/rikheywood", :extra => 'dmode=777,fmode=777'
 
-  ## Test Project
-  #config.vm.share_folder "test", "/test", "../../packages/band-docs", :extra => 'dmode=777,fmode=777'
-  #config.vm.share_folder "test", "/test", "../../packages/mpx", :extra => 'dmode=777,fmode=777'
-  #config.vm.share_folder "test", "/test", "../../symfony", :extra => 'dmode=777,fmode=777'
-  config.vm.share_folder "test", "/test", "../../sym", :extra => 'dmode=777,fmode=777'
-  
-  # Boot with a GUI so you can see the screen. (Default is headless)
-  #config.vm.boot_mode = :gui
 
-  # Assign this VM to a host only network IP, allowing you to access it
-  # via the IP.
-  ##config.vm.network "10.10.10.1"
+  ###############################################
+  # Set some custom options for better support of OSX
+  # Enable Symbolic Links in some of the shared folders 
+  config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/band", "1"]
+  config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/rik", "1"]
 
-  # Enable provisioning with chef solo, specifying a cookbooks path (relative
-  # to this Vagrantfile), and adding some recipes and/or roles.
-  #
+
+  ###############################################
+  # Provision the server using Chef Solo, and set the confif for the server
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
     chef.add_recipe "vagrant_main"
@@ -57,4 +58,14 @@ Vagrant::Config.run do |config|
     	}
     )
   end
+
+
+  ###############################################
+  # Stuff we don't use, but helpful to keep a reminder in there how to do it...
+  # Boot with a GUI so you can see the screen. (Default is headless)
+  #config.vm.boot_mode = :gui
+
+  # Assign this VM to a host only network IP, allowing you to access it
+  # via the IP.
+  ##config.vm.network "10.10.10.1"
 end
