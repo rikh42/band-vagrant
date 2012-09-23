@@ -37,19 +37,24 @@ Vagrant::Config.run do |config|
     chef.add_recipe "vagrant_main"
     chef.log_level = :info
 
-    # You may also specify custom JSON attributes:
+    # Customise the attributes of the receipes
     chef.json.merge!( 
-    {
-		'mysql' =>
-		{
-			'server_root_password' => '4242'
-		},
-		'php' =>
-		{
-			'conf_dir' => '/etc/php5/apache2'
-		}
-  	}
+      {
+  		  'mysql' => { 'server_root_password' => '4242' },
+  		  'php'   => { 'conf_dir' => '/etc/php5/apache2' },
+        'vhosts' => [
+            { 
+                "server_name" => 'band.riffal.com',
+                "document_root" => '/band/htdocs',
+                "env" => {}
+            },
+            { 
+                "server_name" => 'rik.riffal.com',
+                "document_root" => '/rik/htdocs',
+                "env" => {'BAND_ENV'=>'dev', 'POSTMARKAPP_API_KEY'=>'300fd23f-39a5-4d8b-bc20-5a855a0d9209'}
+            }
+        ]
+    	}
     )
   end
-
 end
