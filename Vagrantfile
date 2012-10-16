@@ -25,16 +25,16 @@ Vagrant::Config.run do |config|
     # Customise the attributes of the receipes
     chef.json.merge!( 
       {
-  		  'mysql' => { 'server_root_password' => '4242' },
-  		  'php'   => { 'conf_dir' => '/etc/php5/apache2' },
-        'vhosts' => [
+        'mysql'   => { 'server_root_password' => '4242' },
+        'php'     => { 'conf_dir' => '/etc/php5/apache2' },
+        'vhosts'  => [
             { 
-                "server_name" => 'example.riffal.com',
+                "server_name"   => 'example.riffal.com',
                 "document_root" => '/example/htdocs',
                 "env" => {}
             }
         ]
-    	}
+      }
     )
   end
 
