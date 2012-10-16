@@ -1,34 +1,18 @@
 Vagrant::Config.run do |config|
-  ###############################################
-  # Which base box to use
-  config.vm.box = "ubuntu"
-
 
   ###############################################
-  # Forward some ports. The values are Port on VM, Port on Host computer
-  config.vm.forward_port(80, 8080)
-  config.vm.forward_port(22, 2222)
-  config.vm.forward_port(3306, 3306)
-
-
-
-  ###############################################
-  # Share some folder from Host machine and
+  # Share some folders from Host machine and
   # mount them on the VM
   # Format is Name of share, Path on VM, Path on Host computer to share
 
-  ## Normal Band Dev
-  config.vm.share_folder("band", "/band", "../../band/band-framework", :extra => 'dmode=777,fmode=777')
-
-  ## Rikheywood.co.uk
-  config.vm.share_folder "rik", "/rik", "../../clients/rikheywood", :extra => 'dmode=777,fmode=777'
+  ## Example Project
+  config.vm.share_folder("example", "/example", "~/example", :extra => 'dmode=777,fmode=777')
 
 
   ###############################################
   # Set some custom options for better support of OSX
   # Enable Symbolic Links in some of the shared folders 
-  config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/band", "1"]
-  config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/rik", "1"]
+  config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/example", "1"]
 
 
   ###############################################
@@ -45,20 +29,25 @@ Vagrant::Config.run do |config|
   		  'php'   => { 'conf_dir' => '/etc/php5/apache2' },
         'vhosts' => [
             { 
-                "server_name" => 'band.riffal.com',
-                "document_root" => '/band/htdocs',
+                "server_name" => 'example.riffal.com',
+                "document_root" => '/example/htdocs',
                 "env" => {}
-            },
-            { 
-                "server_name" => 'rik.riffal.com',
-                "document_root" => '/rik/htdocs',
-                "env" => {'BAND_ENV'=>'dev', 'POSTMARKAPP_API_KEY'=>'300fd23f-39a5-4d8b-bc20-5a855a0d9209'}
             }
         ]
     	}
     )
   end
 
+  ###############################################
+  # Which base box to use
+  config.vm.box = "ubuntu"
+
+
+  ###############################################
+  # Forward some ports. The values are Port on VM, Port on Host computer
+  config.vm.forward_port(80, 8080)
+  config.vm.forward_port(22, 2222)
+  config.vm.forward_port(3306, 3306)
 
   ###############################################
   # Stuff we don't use, but helpful to keep a reminder in there how to do it...
